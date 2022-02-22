@@ -89,18 +89,19 @@ exports.createLike = catchAsync(async (req, res, next) => {
   else comment = await Comment.findById(newLike.comment);
 
   const user = post ? post.user : comment.user;
-  const actualUser = await User.findById(newLike.user)
+  const actualUser = await User.findById(newLike.user);
   //verify if owner of the post/like is not the same as the like
   if (user.id.toString() !== newLike.user.toString()) {
     //url of this post
     const url = newLike.post
-      ? `https://deployeddns.herokuapp.com/api/v1/posts/${post._id}`
-      : `https://deployeddns.herokuapp.com/api/v1/comments/${comment._id}`;
+      ? `https://md-nodejsdev-helton-furau.herokuapp.com/api/v1/posts/${post._id}`
+      : `https://md-nodejsdev-helton-furau.herokuapp.com/api/v1/comments/${comment._id}`;
 
     //notify owner about new comment to his post
     if (newLike.post)
       await new Email(user, url, actualUser).sendNotificationNewLikeOnPost();
-    else await new Email(user, url, actualUser).sendNotificationNewLikeOnComment();
+    else
+      await new Email(user, url, actualUser).sendNotificationNewLikeOnComment();
   }
 
   res.status(201).json({

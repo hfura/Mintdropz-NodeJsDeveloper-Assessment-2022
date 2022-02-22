@@ -42,7 +42,7 @@ exports.createComment = factory.createOne(Comment, async comment => {
   //verify if owner of the post is not the same as the comment
   if (user.id !== comment.user) {
     //url of this post
-    const url = `https://deployeddns.herokuapp.com/api/v1/posts/${post._id}`;
+    const url = `https://md-nodejsdev-helton-furau.herokuapp.com/api/v1/posts/${post._id}`;
     //notify owner about new comment to his post
     await new Email(user, url, actualUser).sendNotificationNewCommentOnPost();
   }
